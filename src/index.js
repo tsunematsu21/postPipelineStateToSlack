@@ -11,13 +11,17 @@ exports.handler = (event, context, callback) => {
   slack_req_opts.headers = {'Content-Type': 'application/json'};
   
   const payload = {};
-  let color = 'warning'
+  let color = '#1b9932'
   if (detail.state == 'SUCCEEDED') {
-    color = 'good';
+    color = '#1b9932';
   } else if (detail.state == 'FAILED') {
-    color = 'danger';
+    color = '#cc3301';
   }
   
+  if (process.env.SLACK_USER_NAME)  payload.username   = process.env.SLACK_USER_NAME;
+  if (process.env.SLACK_ICON_URL)   payload.icon_url   = process.env.SLACK_ICON_URL;
+  if (process.env.SLACK_ICON_EMOJI) payload.icon_emoji = process.env.SLACK_ICON_EMOJI;
+
   payload.text = `*Pipeline state changed*`;
   payload.attachments = [{
     title: event.resources.join(', '),

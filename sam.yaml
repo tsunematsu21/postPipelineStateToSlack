@@ -4,6 +4,15 @@ Description: Post pipeline state to Slack
 Parameters:
   SlackWebhookUrl:
     Type: String
+  SlackUserName:
+    Type: String
+    Default: ""
+  SlackIconUrl:
+    Type: String
+    Default: ""
+  SlackIconEmoji:
+    Type: String
+    Default: ""
   TargetState:
     Type: CommaDelimitedList
     Default: CANCELED,FAILED,RESUMED,STARTED,SUCCEEDED
@@ -17,6 +26,9 @@ Resources:
       Environment:
         Variables:
           SLACK_WEBHOOK_URL: !Ref SlackWebhookUrl
+          SLACK_USER_NAME: !Ref SlackUserName
+          SLACK_ICON_URL: !Ref SlackIconUrl
+          SLACK_ICON_EMOJI: !Ref SlackIconEmoji
       Events:
         ScheduleEvent:
           Type: CloudWatchEvent
