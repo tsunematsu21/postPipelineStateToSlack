@@ -14,7 +14,6 @@ Resources:
       Handler: index.handler
       Runtime: nodejs6.10
       CodeUri: ./src
-      Role: !GetAtt CostExplorerReportLambdaIAMRole.Arn
       Environment:
         Variables:
           SLACK_WEBHOOK_URL: !Ref SlackWebhookUrl
