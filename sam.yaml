@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Post pipeline state to Slack
+Parameters:
+  SlackWebhookUrl:
+    Type: String
+  TargetState:
+    Type: CommaDelimitedList
+    Default: CANCELED,FAILED,RESUMED,STARTED,SUCCEEDED
+Resources:
+  postPipelineStateToSlack:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      CodeUri: ./src
+      Role: !GetAtt CostExplorerReportLambdaIAMRole.Arn
+      Environment:
+        Variables:
+          SLACK_WEBHOOK_URL: !Ref SlackWebhookUrl
+      Events:
+        ScheduleEvent:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              source:
+                - 'aws.codepipeline'
+              detail-type:
+                - CodePipeline Stage Execution State Change
+              detail:
+                state: !Ref TargetState
