@@ -11,7 +11,7 @@ exports.handler = (event, context, callback) => {
   slack_req_opts.headers = {'Content-Type': 'application/json'};
   
   const payload = {};
-  let color = '#1b9932'
+  let color = '#3388dd'
   if (detail.state == 'SUCCEEDED') {
     color = '#1b9932';
   } else if (detail.state == 'FAILED') {
